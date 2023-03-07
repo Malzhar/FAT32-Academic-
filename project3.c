@@ -135,11 +135,11 @@ int main(int argc, char *argv[])
 			Get_MBR_BPB(fd); 
 
 			// Key information needed from the BPB
-			unsigned int RsvdSectors = BPB.BPB_RsvdSecCnt; 						// # of reserved sectors
-			unsigned int BytsPerSec = BPB.BPB_BytsPerSec;						// # of bytes per sector
-			unsigned int FATSz32 = BPB.BPB_FATSz32;								// # of sectors per FAT
-			unsigned int NumFATs = BPB.BPB_NumFATs;								// # of FATs
-			unsigned int CN = BPB.BPB_RootClus;									// Root Directory Cluster #
+			unsigned int RsvdSectors = BPB.BPB_RsvdSecCnt; 				// # of reserved sectors
+			unsigned int BytsPerSec = BPB.BPB_BytsPerSec;				// # of bytes per sector
+			unsigned int FATSz32 = BPB.BPB_FATSz32;					// # of sectors per FAT
+			unsigned int NumFATs = BPB.BPB_NumFATs;					// # of FATs
+			unsigned int CN = BPB.BPB_RootClus;					// Root Directory Cluster #
 			unsigned int FATBeginLBA = MBR.part1.LBABegin + RsvdSectors; 		// LBA of the start of first FAT
 			unsigned int ClusBeginLBA = FATBeginLBA + (NumFATs * FATSz32);		// LBA of the start of first cluster
 
@@ -147,8 +147,8 @@ int main(int argc, char *argv[])
 			// the start of the data region. After, find the logical sector number for the  
 			// starting root cluster. 		
 			unsigned int RootDirSectors = ((BPB.BPB_RootEntCnt * 32) + (BytsPerSec - 1)) / BytsPerSec; 	// count of sectors occupied by root directory
-			unsigned int DataStartSec = ClusBeginLBA + RootDirSectors;									// start of the data region 																			
-			unsigned int LSN = GetLSN(CN, DataStartSec);												// Logical Sector # of the cluster stored in CN 
+			unsigned int DataStartSec = ClusBeginLBA + RootDirSectors;					// start of the data region 																			
+			unsigned int LSN = GetLSN(CN, DataStartSec);							// Logical Sector # of the cluster stored in CN 
 			unsigned int RootStartLSN = LSN;
 
 			// Seek to the LSN and read in the contents (512-bytes) into the sector array
@@ -229,9 +229,9 @@ int main(int argc, char *argv[])
 
 void Get_MBR_BPB(FILE *fd)
 {
-	fread(&MBR, 512, 1, fd); 							// Read the 512-bytes of the sector into the MBR struct
+	fread(&MBR, 512, 1, fd); 				// Read the 512-bytes of the sector into the MBR struct
 	fseek(fd, MBR.part1.LBABegin * 512, SEEK_SET);		// Go to the start of the FAT32 Partition  
-	fread(&BPB, 512, 1, fd); 							// Read the BPB and save key information
+	fread(&BPB, 512, 1, fd); 				// Read the BPB and save key information
 }
 
 // This function will first calculate the offset for the cluster number specified
@@ -320,7 +320,7 @@ void displaySFN(unsigned char *dir)
 		{ 
 			sfn[i] = 0x2E;
 			extensionStart = i + 1; 
-			break; 					// break out of the loop
+			break; 				// break out of the loop
 		}
 
 		sfn[i] = dir[i]; 
